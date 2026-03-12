@@ -1,128 +1,170 @@
-@extends('layouts.app')
+@extends('layouts.tabler')
 
 @section('title', 'Edit Profile')
 
 @section('content')
-<div class="container py-4">
-    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
-        <div>
-            <h1 class="h2 fw-bold mb-1">Edit Profile</h1>
-            <p class="text-gasq-muted mb-0">Update your account information and security settings</p>
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    Edit Profile
+                </h2>
+                <div class="text-muted mt-1">Update your account information and security settings</div>
+            </div>
+            <div class="col-12 col-md-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    <a href="{{ route('profile.show') }}" class="btn btn-outline-secondary d-sm-inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="m0 0h24v24H0z" fill="none"/><path d="m9 14l-4 -4l4 -4"/><path d="M5 10h11a4 4 0 1 1 0 8h-1"/></svg>
+                        Back to Profile
+                    </a>
+                </div>
+            </div>
         </div>
-        <a href="{{ route('profile.show') }}" class="btn btn-outline-secondary"><i class="fa fa-arrow-left me-2"></i>Back to Profile</a>
     </div>
+</div>
 
-    @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
-            <strong>Please fix the following:</strong>
-            <ul class="mb-0 mt-2">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <div class="d-flex">
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="m0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    </div>
+                    <div>
+                        <h4 class="alert-title">There were some errors with your submission:</h4>
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+            </div>
+        @endif
 
-    <div class="row g-4">
-        <div class="col-lg-6">
-            <div class="card gasq-card">
-                <div class="card-header">
-                    <h3 class="card-title mb-0">Profile Information</h3>
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('profile.update') }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="d-flex align-items-center gap-3 mb-4">
-                            <img src="{{ $user->avatar_url }}" alt="" class="rounded-circle" width="48" height="48">
-                            <div>
-                                <div class="fw-semibold">{{ $user->name }}</div>
-                                <div class="text-gasq-muted small">{{ $user->email }}</div>
+        <div class="row row-cards">
+            <!-- Profile Information -->
+            <div class="col-md-6">
+                <form action="{{ route('profile.update') }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Profile Information</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row align-items-center mb-3">
+                                <div class="col-auto">
+                                    <span class="avatar avatar-lg" style="background-image: url(https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=206bc4&color=fff&size=80)"></span>
+                                </div>
+                                <div class="col">
+                                    <h3 class="card-title m-0">{{ $user->name }}</h3>
+                                    <p class="text-muted">{{ $user->email }}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label required">Full Name</label>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" 
+                                       name="name" value="{{ old('name', $user->name) }}" placeholder="Enter your full name">
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label required">Email Address</label>
+                                <input type="email" class="form-control @error('email') is-invalid @enderror" 
+                                       name="email" value="{{ old('email', $user->email) }}" placeholder="Enter your email address">
+                                @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $user->name) }}" placeholder="Your full name">
-                            @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        <div class="card-footer text-end">
+                            <button type="submit" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="m0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>
+                                Update Profile
+                            </button>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $user->email) }}" placeholder="your@email.com">
-                            @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Company <span class="text-gasq-muted">(optional)</span></label>
-                            <input type="text" class="form-control @error('company') is-invalid @enderror" name="company" value="{{ old('company', $user->company) }}" placeholder="Your company">
-                            @error('company')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Phone <span class="text-gasq-muted">(optional)</span></label>
-                            <input type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $user->phone) }}" placeholder="+1 234 567 8900">
-                            @error('phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">City</label>
-                                <input type="text" class="form-control @error('city') is-invalid @enderror" name="city" value="{{ old('city', $user->city) }}" placeholder="City">
-                                @error('city')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">State</label>
-                                <input type="text" class="form-control @error('state') is-invalid @enderror" name="state" value="{{ old('state', $user->state) }}" placeholder="State">
-                                @error('state')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">ZIP</label>
-                                <input type="text" class="form-control @error('zip_code') is-invalid @enderror" name="zip_code" value="{{ old('zip_code', $user->zip_code) }}" placeholder="ZIP">
-                                @error('zip_code')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-check me-2"></i>Update Profile</button>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
-        </div>
 
-        <div class="col-lg-6">
-            @if(!$user->google_id)
-            <div class="card gasq-card">
-                <div class="card-header">
-                    <h3 class="card-title mb-0">Change Password</h3>
+            <!-- Change Password -->
+            <div class="col-md-6">
+                @if(!$user->google_id)
+                <form action="{{ route('profile.password.update') }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Change Password</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label required">Current Password</label>
+                                <input type="password" class="form-control @error('current_password') is-invalid @enderror" 
+                                       name="current_password" placeholder="Enter your current password">
+                                @error('current_password')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label required">New Password</label>
+                                <input type="password" class="form-control @error('password') is-invalid @enderror" 
+                                       name="password" placeholder="Enter new password">
+                                @error('password')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label required">Confirm New Password</label>
+                                <input type="password" class="form-control" 
+                                       name="password_confirmation" placeholder="Confirm new password">
+                            </div>
+                        </div>
+                        <div class="card-footer text-end">
+                            <button type="submit" class="btn btn-warning">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="m0 0h24v24H0z" fill="none"/><rect x="3" y="11" width="18" height="11" rx="2"/><circle cx="12" cy="16" r="1"/><path d="m7 11v-4a5 5 0 0 1 10 0v4"/></svg>
+                                Update Password
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                @else
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Password Security</h3>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="empty">
+                            <div class="empty-img">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="m0 0h24v24H0z" fill="none"/><path d="M17.788 5.108A9 9 0 1 0 21 12h-8"/></svg>
+                            </div>
+                            <p class="empty-title">Google OAuth Account</p>
+                            <p class="empty-subtitle text-muted">
+                                Your account is secured through Google OAuth. Password changes are managed through your Google account.
+                            </p>
+                            <div class="empty-action">
+                                <a href="https://myaccount.google.com/security" target="_blank" class="btn btn-outline-primary">
+                                    Manage Google Security
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <form action="{{ route('profile.password.update') }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="mb-3">
-                            <label class="form-label">Current Password</label>
-                            <input type="password" class="form-control @error('current_password') is-invalid @enderror" name="current_password" placeholder="Current password">
-                            @error('current_password')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">New Password</label>
-                            <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="New password">
-                            @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label">Confirm New Password</label>
-                            <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm new password">
-                        </div>
-                        <button type="submit" class="btn btn-warning"><i class="fa fa-lock me-2"></i>Update Password</button>
-                    </form>
-                </div>
+                @endif
             </div>
-            @else
-            <div class="card gasq-card">
-                <div class="card-header">
-                    <h3 class="card-title mb-0">Password</h3>
-                </div>
-                <div class="card-body text-center py-4">
-                    <p class="text-gasq-muted mb-3">Your account uses email/password sign-in. Change your password above when needed.</p>
-                    <p class="small text-gasq-muted mb-0">If you signed up with a different method, password change may not apply.</p>
-                </div>
-            </div>
-            @endif
         </div>
     </div>
 </div>

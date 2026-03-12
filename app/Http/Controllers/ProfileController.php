@@ -50,21 +50,11 @@ class ProfileController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
-            'company' => ['nullable', 'string', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:50'],
-            'city' => ['nullable', 'string', 'max:100'],
-            'state' => ['nullable', 'string', 'max:100'],
-            'zip_code' => ['nullable', 'string', 'max:20'],
         ]);
 
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            'company' => $request->company,
-            'phone' => $request->phone,
-            'city' => $request->city,
-            'state' => $request->state,
-            'zip_code' => $request->zip_code,
         ]);
 
         return redirect()->route('profile.show')->with('success', 'Profile updated successfully.');
