@@ -1,111 +1,121 @@
-@extends('layouts.tabler')
+@extends('layouts.app')
 
 @section('title', 'Dashboard')
 
 @section('content')
-<!-- Page header -->
-<div class="page-header d-print-none">
-    <div class="container-xl">
-        <div class="row g-2 align-items-center">
-            <div class="col">
-                <h2 class="page-title">
-                    Dashboard
-                </h2>
-                <div class="text-muted mt-1">Welcome back, {{ Auth::user()->name }}!</div>
-            </div>
-        </div>
+<div class="container py-4 px-4">
+    <div class="mb-4">
+        <h1 class="gasq-page-title mb-1">Dashboard</h1>
+        <p class="gasq-page-subtitle mb-0">Welcome back, {{ Auth::user()->name }}!</p>
     </div>
-</div>
 
-<!-- Page body -->
-<div class="page-body">
-    <div class="container-xl">
-        @if (session('status'))
-            <div class="alert alert-success alert-dismissible" role="alert">
-                <div class="d-flex">
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="m0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>
-                    </div>
-                    <div>{{ session('status') }}</div>
-                </div>
-                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-            </div>
-        @endif
+    @if (session('status'))
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            {{ session('status') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
-        <div class="row row-deck row-cards">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title">Welcome to your Dashboard!</h3>
-                        <p class="text-muted">You are successfully logged in. This is your main dashboard where you can manage your account and access various features.</p>
-                        
-                        <div class="row">
-                            <div class="col-md-6 col-xl-4">
-                                <div class="card card-sm">
-                                    <div class="card-body">
-                                        <div class="row align-items-center">
-                                            <div class="col-auto">
-                                                <span class="bg-primary text-white avatar">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="m0 0h24v24H0z" fill="none"/><circle cx="12" cy="7" r="4"/><path d="m6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/></svg>
-                                                </span>
-                                            </div>
-                                            <div class="col">
-                                                <div class="font-weight-medium">
-                                                    Profile Management
-                                                </div>
-                                                <div class="text-muted">
-                                                    Update your personal information
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="card card-sm">
-                                    <div class="card-body">
-                                        <div class="row align-items-center">
-                                            <div class="col-auto">
-                                                <span class="bg-green text-white avatar">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="m0 0h24v24H0z" fill="none"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="m9 9h6v6h-6z"/></svg>
-                                                </span>
-                                            </div>
-                                            <div class="col">
-                                                <div class="font-weight-medium">
-                                                    Account Security
-                                                </div>
-                                                <div class="text-muted">
-                                                    Manage your account security
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="card card-sm">
-                                    <div class="card-body">
-                                        <div class="row align-items-center">
-                                            <div class="col-auto">
-                                                <span class="bg-blue text-white avatar">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="m0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
-                                                </span>
-                                            </div>
-                                            <div class="col">
-                                                <div class="font-weight-medium">
-                                                    Settings
-                                                </div>
-                                                <div class="text-muted">
-                                                    Configure your preferences
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+    <div class="card gasq-card mb-4">
+        <div class="card-body p-4 p-lg-5">
+            <h2 class="gasq-card-title-lg mb-2">Quick actions</h2>
+            <p class="text-gasq-muted small mb-4">Manage your account and access calculators, jobs, and credits.</p>
+            <div class="row g-3">
+                <div class="col-sm-6 col-lg-4">
+                    <a href="{{ route('profile.show') }}" class="text-decoration-none">
+                        <div class="gasq-card card h-100 border p-3 d-flex align-items-center gap-3">
+                            <span class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width: 48px; height: 48px;">
+                                <i class="fa fa-user"></i>
+                            </span>
+                            <div class="min-w-0">
+                                <div class="fw-semibold">Profile</div>
+                                <div class="small text-gasq-muted">Update your information</div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
+                <div class="col-sm-6 col-lg-4">
+                    <a href="{{ route('main-menu-calculator.index') }}" class="text-decoration-none">
+                        <div class="gasq-card card h-100 border p-3 d-flex align-items-center gap-3">
+                            <span class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width: 48px; height: 48px;">
+                                <i class="fa fa-calculator"></i>
+                            </span>
+                            <div class="min-w-0">
+                                <div class="fw-semibold">Calculators</div>
+                                <div class="small text-gasq-muted">Estimates & analysis</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <a href="{{ route('job-board') }}" class="text-decoration-none">
+                        <div class="gasq-card card h-100 border p-3 d-flex align-items-center gap-3">
+                            <span class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width: 48px; height: 48px;">
+                                <i class="fa fa-briefcase"></i>
+                            </span>
+                            <div class="min-w-0">
+                                <div class="fw-semibold">Job Board</div>
+                                <div class="small text-gasq-muted">Browse or post jobs</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <a href="{{ route('account-balance') }}" class="text-decoration-none">
+                        <div class="gasq-card card h-100 border p-3 d-flex align-items-center gap-3">
+                            <span class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width: 48px; height: 48px;">
+                                <i class="fa fa-wallet"></i>
+                            </span>
+                            <div class="min-w-0">
+                                <div class="fw-semibold">Credits</div>
+                                <div class="small text-gasq-muted">Balance & history</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                @if(auth()->user()->isBuyer() || auth()->user()->isVendor())
+                <div class="col-sm-6 col-lg-4">
+                    <a href="{{ route('jobs.index') }}" class="text-decoration-none">
+                        <div class="gasq-card card h-100 border p-3 d-flex align-items-center gap-3">
+                            <span class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width: 48px; height: 48px;">
+                                <i class="fa fa-list"></i>
+                            </span>
+                            <div class="min-w-0">
+                                <div class="fw-semibold">My Jobs</div>
+                                <div class="small text-gasq-muted">Your postings & bids</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                @endif
+                <div class="col-sm-6 col-lg-4">
+                    <a href="{{ route('discovery-call.index') }}" class="text-decoration-none">
+                        <div class="gasq-card card h-100 border p-3 d-flex align-items-center gap-3">
+                            <span class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width: 48px; height: 48px;">
+                                <i class="fa fa-phone-alt"></i>
+                            </span>
+                            <div class="min-w-0">
+                                <div class="fw-semibold">Discovery Call</div>
+                                <div class="small text-gasq-muted">Request a call</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                @if(auth()->user()->isAdmin())
+                <div class="col-sm-6 col-lg-4">
+                    <a href="{{ route('admin.settings') }}" class="text-decoration-none">
+                        <div class="gasq-card card h-100 border p-3 d-flex align-items-center gap-3">
+                            <span class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width: 48px; height: 48px;">
+                                <i class="fa fa-cog"></i>
+                            </span>
+                            <div class="min-w-0">
+                                <div class="fw-semibold">Settings</div>
+                                <div class="small text-gasq-muted">Site settings & logo</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                @endif
             </div>
         </div>
     </div>

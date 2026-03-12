@@ -33,11 +33,12 @@ class GoogleController extends Controller
                 Auth::login($finduser);
                 return redirect()->intended('home');
             } else {
-                $newUser = User::updateOrCreate(['email' => $user->email],[
+                $newUser = User::updateOrCreate(['email' => $user->email], [
                     'name' => $user->name,
                     'email' => $user->email,
-                    'google_id'=> $user->id,
-                    'password' => Hash::make('123456dummy')
+                    'google_id' => $user->id,
+                    'password' => Hash::make('123456dummy'),
+                    'user_type' => 'buyer',
                 ]);
                 
                 Auth::login($newUser);

@@ -1,5 +1,13 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Stripe mode: test (dev) or live (production)
+| Set STRIPE_MODE=test|live, or leave unset to use APP_ENV (production => live).
+|--------------------------------------------------------------------------
+*/
+$stripeMode = env('STRIPE_MODE', env('APP_ENV') === 'production' ? 'live' : 'test');
+
 return [
 
     /*
@@ -39,6 +47,17 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URI'),
+    ],
+
+    'stripe' => [
+        'mode' => $stripeMode,
+        'secret' => $stripeMode === 'live' ? env('STRIPE_SECRET') : env('STRIPE_SECRET_TEST'),
+        'publishable' => $stripeMode === 'live' ? env('STRIPE_PUBLISHABLE_KEY_LIVE') : env('STRIPE_PUBLISHABLE_KEY_TEST'),
+        'webhook_secret' => $stripeMode === 'live'
+            ? env('STRIPE_WEBHOOK_SECRET_LIVE', env('STRIPE_WEBHOOK_SECRET'))
+            : env('STRIPE_WEBHOOK_SECRET_TEST', env('STRIPE_WEBHOOK_SECRET')),
+        'success_url' => env('STRIPE_SUCCESS_URL'),
+        'cancel_url' => env('STRIPE_CANCEL_URL'),
     ],
 
 ];
